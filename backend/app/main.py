@@ -27,8 +27,6 @@ async def lifespan(app: FastAPI):
     
     yield
     
-    # Cleanup (if needed)
-    pass
 
 app = FastAPI()
 
