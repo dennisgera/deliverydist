@@ -1,0 +1,17 @@
+{
+  "name": "deliverydist",
+  "version": "1.0.0",
+  "scripts": {
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && poetry run uvicorn app.main:app --reload",
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && poetry install",
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  },
+  "keywords": [],
+  "license": "ISC"
+}
