@@ -6,8 +6,7 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-# Fix the path resolution
-BASE_DIR = Path(__file__).resolve().parent.parent.parent  # Go up two levels from db/database.py
+BASE_DIR = Path(__file__).resolve().parent.parent.parent 
 DB_FILE = 'app/sql_app.db'
 DATABASE_URL = f"sqlite:///{BASE_DIR / DB_FILE}"
 
@@ -42,11 +41,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
-# Initialize database tables
-def init_db():
-    Base.metadata.create_all(bind=engine)
-    logger.info("Database tables created")
 
 # Log info after setup
 log_db_info()

@@ -32,7 +32,6 @@ async def request_middleware(request: Request, call_next: Callable):
         f"Client: {request.client.host if request.client else 'Unknown'}"
     )
 
-    # Process request
     try:
         response = await call_next(request)
         process_time = time.time() - start_time

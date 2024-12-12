@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class GeocodingService(BaseModel):
     base_url: str = "https://nominatim.openstreetmap.org/search"
     headers: dict = {
-        "User-Agent": "DistanceCalculator/1.0"  # Required by Nominatim's ToS
+        "User-Agent": "DistanceCalculator/1.0" 
     }
 
     async def get_coordinates(self, address: str) -> Optional[Tuple[float, float]]:

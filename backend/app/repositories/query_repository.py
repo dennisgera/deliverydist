@@ -1,4 +1,3 @@
-# app/repositories/query_repository.py
 from sqlalchemy.orm import Session
 from app.models.query import Query
 from app.repositories.base import BaseFinder, BaseRepository

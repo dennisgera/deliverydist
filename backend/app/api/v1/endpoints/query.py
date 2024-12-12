@@ -1,4 +1,3 @@
-# app/api/v1/endpoints/query.py
 from fastapi import APIRouter, Depends
 from app.api.v1.dependencies import get_query_controller
 from app.controllers.query_controller import QueryController

@@ -1,4 +1,3 @@
-# tests/api/v1/test_query.py
 from unittest.mock import patch
 
 def test_calculate_distance_success(client):
