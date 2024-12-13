@@ -28,14 +28,26 @@ class GeocodingService(BaseModel):
                 response.raise_for_status()
                 
                 results = response.json()
-                if not results:
+                if not results or "features" not in results or not results["features"]:
                     raise HTTPException(
                         status_code=404,
                         detail=f"Address not found: {address}"
                     )
-                    
-                lat, lon = results["features"][0]["geometry"]["coordinates"]
-                return float(lat), float(lon)
+                
+                try:
+                    coordinates = results["features"][0]["geometry"]["coordinates"]
+                    if not coordinates or len(coordinates) < 2:
+                        raise HTTPException(
+                            status_code=404,
+                            detail=f"Invalid coordinates returned for address: {address}"
+                        )
+                    lon, lat = coordinates
+                    return float(lat), float(lon)
+                except (KeyError, IndexError) as e:
+                    raise HTTPException(
+                        status_code=404,
+                        detail=f"Invalid response format for address: {address}. Error: {str(e)}"
+                    )
                 
             except requests.RequestException as e:
                 raise HTTPException(

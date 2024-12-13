@@ -48,5 +48,4 @@ def get_db():
     finally:
         db.close()
 
-# Log info after setup
 log_db_info()

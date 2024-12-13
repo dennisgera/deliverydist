@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from app.repositories.base import BaseRepository
 from app.exceptions import RecordNotFoundException
+from app.services.error_handler import ErrorHandlerService
 
 T = TypeVar("T")
 CREATE = TypeVar("CREATE", bound=BaseModel)
@@ -91,13 +92,4 @@ class BaseController(Generic[T, CREATE, UPDATE]):
             )
 
     def _handle_exception(self, e: Exception, operation: str) -> None:
-        """Common exception handler for controller operations"""
-        if isinstance(e, RecordNotFoundException):
-            raise HTTPException(
-                status_code=404,
-                detail="Record not found"
-            )
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error during {operation}: {str(e)}"
-        )
+        ErrorHandlerService.handle_application_error(e, operation)
