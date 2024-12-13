@@ -10,9 +10,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DB_FILE = 'app/sql_app.db'
 DATABASE_URL = f"sqlite:///{BASE_DIR / DB_FILE}"
 
-logger.info(f"Database BASE_DIR: {BASE_DIR}")
-logger.info(f"Full database path: {BASE_DIR / DB_FILE}")
-
 # Create directory if it doesn't exist
 db_path = Path(DATABASE_URL.replace('sqlite:///', ''))
 db_dir = db_path.parent
