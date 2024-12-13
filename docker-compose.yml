@@ -7,6 +7,12 @@ services:
       target: backend-build
     ports:
       - "8000:8000"
+    volumes:
+      - ./data:/app/backend/data
+    command: >
+      sh -c "cd backend && 
+             poetry run alembic upgrade head &&
+             poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000"
 
   frontend:
     build: 
