@@ -24,6 +24,12 @@ def test_db():
         try:
             db = TestingSessionLocal()
             yield db
+        except:  # noqa: E722
+            db.rollback()
+            raise
+        else:
+            if db.is_active:
+                db.commit()
         finally:
             db.close()
     

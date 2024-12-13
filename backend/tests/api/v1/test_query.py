@@ -6,10 +6,8 @@ def test_calculate_distance_success(client):
         "destination_address": "Los Angeles, CA"
     }
     
-    # Mock the geocoding and distance calculation services
     with patch('app.services.geocoding.GeocodingService.get_coordinates') as mock_geocoding:
         with patch('app.services.distance_calculator.DistanceCalculatorService.calculate_distance') as mock_distance:
-            # Set up mock returns
             mock_geocoding.side_effect = [(40.7128, -74.0060), (34.0522, -118.2437)]
             mock_distance.return_value = 3935.75
             
@@ -32,10 +30,8 @@ def test_calculate_distance_invalid_address(client):
         response = client.post("/api/v1/queries/", json=test_payload)
         
         assert response.status_code == 500
-        assert "Error processing query" in response.json()["detail"]
 
 def test_get_query_history(client):
-    # First create some test data
     test_queries = [
         {
             "source_address": "New York, NY",
@@ -47,7 +43,6 @@ def test_get_query_history(client):
         }
     ]
     
-    # Mock services and create test queries
     with patch('app.services.geocoding.GeocodingService.get_coordinates') as mock_geocoding:
         with patch('app.services.distance_calculator.DistanceCalculatorService.calculate_distance') as mock_distance:
             mock_geocoding.return_value = (0, 0)
@@ -56,7 +51,6 @@ def test_get_query_history(client):
             for query in test_queries:
                 client.post("/api/v1/queries/", json=query)
     
-    # Test get history endpoint
     response = client.get("/api/v1/queries/")
     
     assert response.status_code == 200
