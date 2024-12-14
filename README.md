@@ -7,7 +7,6 @@ A web application that calculates the distance between two addresses. The applic
 - Calculate distance between two addresses
 - View history of previous calculations
 - Data persistence for search history
-- Error handling and loading states
 
 ## Prerequisites
 
@@ -41,21 +40,6 @@ To stop the application:
 docker compose down
 ```
 
-## Tech Stack
-
-### Backend
-- FastAPI (Python web framework)
-- SQLAlchemy (ORM)
-- Poetry (Dependency management)
-- Nominatim API (Geocoding)
-
-### Frontend
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
-- shadcn/ui components
-
 ## API Endpoints
 
 - `GET /api/v1/queries` - Get history of distance calculations
@@ -63,18 +47,9 @@ docker compose down
 
 ## Development
 
-If you want to run the services separately for development:
+If you want to develop the application locally, without using docker:
 
-1. Backend:
 ```bash
-cd backend
-poetry install
-poetry run uvicorn app.main:app --reload
-```
-
-2. Frontend:
-```bash
-cd frontend
-npm install
+npm run install:all
 npm run dev
 ```
