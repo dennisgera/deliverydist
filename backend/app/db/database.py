@@ -20,7 +20,6 @@ engine = create_engine(
     connect_args={"check_same_thread": False}
 )
 
-# Log database connection info
 def log_db_info():
     db_path = Path(DATABASE_URL.replace('sqlite:///', ''))
     logger.info(f"Database file exists: {db_path.exists()}")

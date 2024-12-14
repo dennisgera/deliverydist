@@ -50,6 +50,9 @@ docker compose down
 If you want to develop the application locally, without using docker:
 
 ```bash
+cd backend
+poetry run app/db/db_management.py upgrade
+cd ..
 npm run install:all
 npm run dev
 ```
