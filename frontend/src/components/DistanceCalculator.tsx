@@ -13,7 +13,7 @@ interface QueryResult {
     distance: number;
   }
   
-const API_BASE = "https://deliverydist-api.fly.dev"
+const API_BASE = process.env.NEXT_PUBLIC_API_URL as string || 'http://localhost:8000';
 
 const DistanceCalculator = () => {
   const [sourceAddress, setSourceAddress] = useState('');
