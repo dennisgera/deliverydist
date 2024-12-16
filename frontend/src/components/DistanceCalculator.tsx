@@ -13,7 +13,7 @@ interface QueryResult {
     distance: number;
   }
   
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE = "https://deliverydist-api.fly.dev"
 
 const DistanceCalculator = () => {
   const [sourceAddress, setSourceAddress] = useState('');
@@ -29,51 +29,59 @@ const DistanceCalculator = () => {
 
   const fetchHistory = async () => {
     try {
-      console.log(`${API_BASE}/api/v1/queries`);
-      const response = await fetch(`${API_BASE}/api/v1/queries`);
+      const response = await fetch(`${API_BASE}/api/v1/queries/`, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        redirect: 'follow', 
+      });
+      
       const data = await response.json();
       setHistory(data);
-      } catch (error) {
-        setError(`Failed to fetch search history: ${error}`);
-      }
-      
+    } catch (error) {
+      console.error('Detailed error:', error);
+      setError(`Failed to fetch search history: ${error}`);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    setResult(null);
+      e.preventDefault();
+      setLoading(true);
+      setError('');
+      setResult(null);
 
-    try {
-      const response = await fetch(`${API_BASE}/api/v1/queries/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          source_address: sourceAddress,
-          destination_address: destinationAddress,
-        }),
-      });
+      try {
+        const response = await fetch(`${API_BASE}/api/v1/queries/`, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          redirect: 'follow', 
+          body: JSON.stringify({
+            source_address: sourceAddress,
+            destination_address: destinationAddress,
+          }),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.detail || 'Failed to calculate distance');
+        if (!response.ok) {
+          throw new Error(data.detail || 'Failed to calculate distance');
+        }
+
+        setResult(data);
+        await fetchHistory();
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
+      } finally {
+        setLoading(false);
       }
-
-      setResult(data);
-      await fetchHistory();
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('An unknown error occurred');
-      }
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (

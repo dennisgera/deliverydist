@@ -19,33 +19,27 @@ services:
 
   backend:
     build: 
-      context: .
-      target: backend-build
+      context: ./backend  
+      dockerfile: Dockerfile 
     ports:
       - "8000:8000"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/deliverydist
-    command: >
-      sh -c "cd backend && 
-             poetry run alembic upgrade head &&
-             poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    command: poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000
     depends_on:
       db:
         condition: service_healthy
 
   frontend:
     build: 
-      context: .
-      target: frontend-build
+      context: ./frontend  
+      dockerfile: Dockerfile 
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://backend:8000
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
     depends_on:
       - backend
-    tty: true
-    stdin_open: true
 
 volumes:
   postgres_data:
