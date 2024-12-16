@@ -1,5 +1,5 @@
 # Stage 1: Backend Build
-FROM python:3.11-slim as backend-build
+FROM python:3.11-slim AS backend-build
 
 # Install poetry
 RUN pip install poetry
@@ -23,7 +23,7 @@ EXPOSE 8000
 CMD ["sh", "-c", "cd backend && poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000"]
 
 # Stage 2: Frontend Build
-FROM node:20-slim as frontend-build
+FROM node:20-slim AS frontend-build
 
 # Set working directory
 WORKDIR /app

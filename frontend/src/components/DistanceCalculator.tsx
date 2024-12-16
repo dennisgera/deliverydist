@@ -12,8 +12,8 @@ interface QueryResult {
     destination_address: string;
     distance: number;
   }
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 const DistanceCalculator = () => {
   const [sourceAddress, setSourceAddress] = useState('');
@@ -29,11 +29,12 @@ const DistanceCalculator = () => {
 
   const fetchHistory = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/v1/queries`);
+      console.log(`${API_BASE}/api/v1/queries`);
+      const response = await fetch(`${API_BASE}/api/v1/queries`);
       const data = await response.json();
       setHistory(data);
-      } catch {
-        setError('Failed to load history');
+      } catch (error) {
+        setError(`Failed to fetch search history: ${error}`);
       }
       
   };
@@ -45,7 +46,7 @@ const DistanceCalculator = () => {
     setResult(null);
 
     try {
-      const response = await fetch(`${API_URL}/api/v1/queries/`, {
+      const response = await fetch(`${API_BASE}/api/v1/queries/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
